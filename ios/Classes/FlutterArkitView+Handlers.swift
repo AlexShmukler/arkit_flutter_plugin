@@ -111,29 +111,6 @@ extension FlutterArkitView {
         }
     }
     
-    func onUpdateFaceGeometry(_ arguments: Dictionary<String, Any>) {
-        #if !DISABLE_TRUEDEPTH_API
-        guard let name = arguments["name"] as? String,
-            let param = arguments["geometry"] as? Dictionary<String, Any>,
-            let fromAnchorId = param["fromAnchorId"] as? String
-            else {
-                logPluginError("deserialization failed", toChannel: channel)
-                return
-        }
-        if let node = sceneView.scene.rootNode.childNode(withName: name, recursively: true),
-            let geometry = node.geometry as? ARSCNFaceGeometry,
-            let anchor = sceneView.session.currentFrame?.anchors.first(where: {$0.identifier.uuidString == fromAnchorId}) as? ARFaceAnchor
-        {
-            
-            geometry.update(from: anchor.geometry)
-        } else {
-            logPluginError("node not found, geometry was empty, or anchor not found", toChannel: channel)
-        }
-        #else
-        logPluginError("TRUEDEPTH_API disabled", toChannel: channel)
-        #endif
-    }
-    
     func onPerformHitTest(_ arguments: Dictionary<String, Any>, _ result:FlutterResult) {
         guard let x = arguments["x"] as? Double,
             let y = arguments["y"] as? Double else {

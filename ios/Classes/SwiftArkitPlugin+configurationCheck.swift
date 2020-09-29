@@ -9,12 +9,6 @@ func checkConfiguration(_ arguments: Any?) -> Bool {
     switch configurationType {
     case 0:
         return ARWorldTrackingConfiguration.isSupported
-    case 1:
-        #if !DISABLE_TRUEDEPTH_API
-        return ARFaceTrackingConfiguration.isSupported
-        #else
-        return false
-        #endif
     case 2:
         if #available(iOS 12.0, *) {
             return ARImageTrackingConfiguration.isSupported

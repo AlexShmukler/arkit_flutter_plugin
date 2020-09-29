@@ -68,10 +68,6 @@ class FlutterArkitView: NSObject, FlutterPlatformView {
         case "performHitTest":
             onPerformHitTest(arguments!, result)
             break
-        case "updateFaceGeometry":
-            onUpdateFaceGeometry(arguments!)
-            result(nil)
-            break
         case "getLightEstimate":
             onGetLightEstimate(result)
             result(nil)

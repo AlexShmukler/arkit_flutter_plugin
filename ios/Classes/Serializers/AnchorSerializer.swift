@@ -17,14 +17,6 @@ func serializeAnchor(_ anchor: ARAnchor) -> Dictionary<String, Any> {
         }
     }
     
-    #if !DISABLE_TRUEDEPTH_API
-    if #available(iOS 12.0, *) {
-        if let faceAnchor = anchor as? ARFaceAnchor {
-            params = serializeFaceAnchor(faceAnchor, params)
-        }
-    }
-    #endif
-    
     if #available(iOS 13.0, *) {
         if let bodyAnchor = anchor as? ARBodyAnchor {
             params = serializeBodyAnchor(bodyAnchor, params)
@@ -54,19 +46,6 @@ fileprivate func serializeImageAnchor(_ anchor: ARImageAnchor, _ params:[String 
     params["referenceImagePhysicalSize"] = [anchor.referenceImage.physicalSize.width, anchor.referenceImage.physicalSize.height]
     return params
 }
-
-#if !DISABLE_TRUEDEPTH_API
-@available(iOS 12.0, *)
-fileprivate func serializeFaceAnchor(_ anchor: ARFaceAnchor, _ params:[String : Any]) -> [String : Any]{
-    var params = params
-    params["anchorType"] = "faceAnchor"
-    params["isTracked"] = anchor.isTracked
-    params["leftEyeTransform"] = serializeMatrix(anchor.leftEyeTransform)
-    params["rightEyeTransform"] = serializeMatrix(anchor.rightEyeTransform)
-    params["blendShapes"] = anchor.blendShapes
-    return params
-}
-#endif
 
 @available(iOS 13.0, *)
 fileprivate func serializeBodyAnchor(_ anchor: ARBodyAnchor, _ params:[String : Any]) -> [String : Any]{
